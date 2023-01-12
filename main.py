@@ -11,6 +11,7 @@ from forms import LoginForm, RegisterForm, CreatePostForm, CommentForm
 from flask_gravatar import Gravatar
 import os
 
+##Configure application
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
 ckeditor = CKEditor(app)
@@ -64,7 +65,7 @@ class Comment(db.Model):
     text = db.Column(db.Text, nullable=False)
 db.create_all()
 
-
+##Defining admin only decorator.
 def admin_only(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -87,7 +88,7 @@ def register():
 
         if User.query.filter_by(email=form.email.data).first():
             print(User.query.filter_by(email=form.email.data).first())
-            #User already exists
+            ##User already exists
             flash("You've already signed up with that email, log in instead!")
             return redirect(url_for('login'))
 
@@ -117,7 +118,7 @@ def login():
         password = form.password.data
 
         user = User.query.filter_by(email=email).first()
-        # Email doesn't exist or password incorrect.
+        ##Email doesn't exist or password incorrect.
         if not user:
             flash("That email does not exist, please try again.")
             return redirect(url_for('login'))
